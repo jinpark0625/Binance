@@ -41,7 +41,7 @@ const TextInput = ({
 }: TextInput) => {
   const themeColor = useThemeColor();
 
-  const [isFocused, setIsFocused] = useState(false);
+  const [isFocused, setIsFocused] = useState<boolean>(false);
   const inputRef = useRef<RNTextInput>(null);
 
   const animation = useSharedValue(0);
@@ -84,7 +84,7 @@ const TextInput = ({
             }}
           >
             <Text style={styles.popoverText} variant="xs">
-              ${value}
+              ${Number(value).toLocaleString()}
             </Text>
           </View>
 
@@ -164,8 +164,7 @@ export default TextInput;
 
 const styles = StyleSheet.create({
   input: {
-    // width: "100%",
-    width: 200,
+    width: "100%",
     height: 40,
     paddingTop: 12,
     paddingHorizontal: 26,
