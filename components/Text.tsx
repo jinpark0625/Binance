@@ -10,7 +10,7 @@ import { palette } from "@/constants/Colors";
 
 interface Text extends TextProps {
   variant?: "xxs" | "xs" | "s" | "m" | "lg";
-  weight?: "normal" | "medium" | "bold";
+  weight?: "light" | "normal" | "medium" | "bold";
   align?: "left" | "center" | "right";
   color?: "textPrimary" | "textSecondary";
   staticColor?: "primary" | "green" | "red" | "white";
@@ -59,12 +59,15 @@ const styles = StyleSheet.create({
     lineHeight: 21,
   },
   m: {
-    fontSize: 16,
+    fontSize: 15,
     lineHeight: 24,
   },
   lg: {
-    fontSize: 18,
+    fontSize: 17,
     lineHeight: 27,
+  },
+  light: {
+    fontWeight: 300,
   },
   normal: {
     fontWeight: 400,
