@@ -16,6 +16,7 @@ export const palette = {
   greenLight: "#F5FCF9",
   red: "#F6455D",
   redLight: "#FFF6F7",
+  gold: "#C09306",
 };
 
 export const Colors = {
