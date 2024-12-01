@@ -22,8 +22,10 @@ interface TextInput extends TextInputProps {
   label: string;
   value?: string | undefined;
   onChangeText: (val: string) => void;
-  onDecrease: () => void;
-  onIncrease: () => void;
+  buttonsActive?: boolean;
+  onDecrease?: () => void;
+  onIncrease?: () => void;
+  popoverActive?: boolean;
 }
 
 const TextInput = ({
@@ -32,8 +34,10 @@ const TextInput = ({
   onBlur,
   onFocus,
   onChangeText,
+  buttonsActive = false,
   onDecrease,
   onIncrease,
+  popoverActive = false,
 }: TextInput) => {
   const themeColor = useThemeColor();
 
@@ -71,12 +75,36 @@ const TextInput = ({
         justifyContent: "center",
       }}
     >
-      <Pressable
-        style={[styles.buttonContainer, styles.buttonLeft]}
-        onPress={onDecrease}
-      >
-        <AntDesign name="minus" size={16} color={themeColor.icon} />
-      </Pressable>
+      {popoverActive && isFocused && (
+        <View style={styles.popoverContainer}>
+          <View
+            style={{
+              backgroundColor: themeColor.backgroundBlack,
+              ...styles.popover,
+            }}
+          >
+            <Text style={styles.popoverText} variant="xs">
+              ${value}
+            </Text>
+          </View>
+
+          <View
+            style={{
+              borderTopColor: themeColor.backgroundBlack,
+
+              ...styles.arrow,
+            }}
+          />
+        </View>
+      )}
+      {buttonsActive && (
+        <Pressable
+          style={[styles.buttonContainer, styles.buttonLeft]}
+          onPress={onDecrease}
+        >
+          <AntDesign name="minus" size={16} color={themeColor.icon} />
+        </Pressable>
+      )}
       <RNTextInput
         style={{
           backgroundColor: themeColor.fieldBackground,
@@ -120,12 +148,14 @@ const TextInput = ({
         </Animated.View>
       </TouchableWithoutFeedback>
 
-      <Pressable
-        style={[styles.buttonContainer, styles.buttonRight]}
-        onPress={onIncrease}
-      >
-        <AntDesign name="plus" size={16} color={themeColor.icon} />
-      </Pressable>
+      {buttonsActive && (
+        <Pressable
+          style={[styles.buttonContainer, styles.buttonRight]}
+          onPress={onIncrease}
+        >
+          <AntDesign name="plus" size={16} color={themeColor.icon} />
+        </Pressable>
+      )}
     </View>
   );
 };
@@ -160,9 +190,39 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   buttonLeft: {
-    left: 0,
+    left: 2,
   },
   buttonRight: {
-    right: 0,
+    right: 2,
+  },
+  popoverContainer: {
+    position: "absolute",
+    top: -30,
+    zIndex: 1000,
+  },
+  popover: {
+    paddingVertical: 5,
+    paddingHorizontal: 6,
+    borderRadius: 8,
+    minWidth: 30,
+    alignItems: "center",
+    opacity: 0.9,
+  },
+  popoverText: {
+    color: "white",
+  },
+  arrow: {
+    position: "absolute",
+    bottom: -6,
+    left: "50%",
+    width: 0,
+    height: 0,
+    borderLeftWidth: 5,
+    borderRightWidth: 5,
+    borderTopWidth: 6,
+    borderLeftColor: "transparent",
+    borderRightColor: "transparent",
+    transform: [{ translateX: -5 }],
+    opacity: 0.9,
   },
 });
