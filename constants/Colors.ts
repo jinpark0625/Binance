@@ -13,12 +13,15 @@ export const palette = {
   },
   primary: "#FCD435",
   green: "#2DBD85",
+  greenLight: "#F5FCF9",
   red: "#F6455D",
+  redLight: "#FFF6F7",
 };
 
 export const Colors = {
   light: {
     background: palette.white,
+    backgroundBlack: palette.gray[900],
     fieldBackground: palette.gray[100],
     border: palette.gray[200],
     textPrimary: palette.gray[900],
@@ -27,6 +30,7 @@ export const Colors = {
   },
   dark: {
     background: palette.gray[900],
+    backgroundBlack: palette.gray[100],
     fieldBackground: palette.gray[900],
     border: palette.gray[700],
     textPrimary: palette.gray[200],
