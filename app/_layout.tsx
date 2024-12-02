@@ -3,9 +3,12 @@ import {
   QueryClientProvider,
   focusManager,
 } from "@tanstack/react-query";
-import { AppStateStatus, Platform } from "react-native";
+import { AppStateStatus, Platform, View } from "react-native";
 import { useOnlineManager, useAppState } from "@/hooks/query";
+import { GlobalBottomSheet } from "@/components";
 import { Stack } from "expo-router";
+import { RecoilRoot } from "recoil";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function RootLayout() {
   const onAppStateChange = (status: AppStateStatus) => {
@@ -22,8 +25,18 @@ export default function RootLayout() {
   useAppState(onAppStateChange);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <Stack />
-    </QueryClientProvider>
+    <GestureHandlerRootView>
+      <QueryClientProvider client={queryClient}>
+        <RecoilRoot>
+          <View style={{ flex: 1 }}>
+            <Stack>
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              <Stack.Screen name="+not-found" />
+            </Stack>
+            <GlobalBottomSheet />
+          </View>
+        </RecoilRoot>
+      </QueryClientProvider>
+    </GestureHandlerRootView>
   );
 }

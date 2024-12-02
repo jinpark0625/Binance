@@ -1,28 +1,29 @@
 import { useState } from "react";
-import { View, ScrollView, SafeAreaView, Pressable } from "react-native";
-import { BottomSheet, Button, CheckBox, Text, TextInput } from "@/components";
+import { View, ScrollView, SafeAreaView } from "react-native";
+import { Button, CheckBox, Text, TextInput } from "@/components";
 import { useThemeColor } from "@/hooks/theme/useThemeColor";
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  useDerivedValue,
-  withDelay,
-  withTiming,
-} from "react-native-reanimated";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import PriceSortIcon from "@/components/icons/PriceSortIcon";
 import { palette } from "@/constants/Colors";
+import { useSetRecoilState } from "recoil";
+import { bottomSheetState } from "@/atom/bottomSheetAtom";
 
-export default function Index() {
+const TradeScreen = () => {
   const themeColor = useThemeColor();
+  const setBottomSheet = useSetRecoilState(bottomSheetState);
 
   const [value, setValue] = useState("");
   const [priceSort, setPriceSort] = useState<number>(0);
 
-  const isOpen = useSharedValue(false);
-
-  const toggleSheet = () => {
-    isOpen.value = !isOpen.value;
+  const openBottomSheet = () => {
+    setBottomSheet({
+      isOpen: true,
+      content: (
+        <View style={{ height: 400, backgroundColor: "red" }}>
+          <Text>테스트</Text>
+        </View>
+      ),
+    });
   };
 
   const togglePriceSort = () => {
@@ -681,10 +682,12 @@ export default function Index() {
                 </Button>
               </View>
             </View>
-            <Button title="Buy BTC" onPress={console.log} />
+            <Button title="Buy BTC" onPress={openBottomSheet} />
           </View>
         </View>
       </ScrollView>
     </SafeAreaView>
   );
-}
+};
+
+export default TradeScreen;
