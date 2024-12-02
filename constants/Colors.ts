@@ -1,3 +1,5 @@
+import { DefaultTheme, DarkTheme } from "@react-navigation/native";
+
 export const palette = {
   white: "#fff",
   gray: {
@@ -17,6 +19,24 @@ export const palette = {
   red: "#F6455D",
   redLight: "#FFF6F7",
   gold: "#C09306",
+};
+
+export const lightTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: palette.white,
+    text: palette.gray[900],
+  },
+};
+
+export const darkTheme = {
+  ...DarkTheme,
+  colors: {
+    ...DarkTheme.colors,
+    background: palette.gray[900],
+    text: palette.white,
+  },
 };
 
 export const Colors = {
