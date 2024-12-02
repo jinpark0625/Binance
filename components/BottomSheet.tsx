@@ -73,7 +73,6 @@ const BottomSheet = ({
     .runOnJS(true);
 
   const sheetStyle = useAnimatedStyle(() => {
-    console.log(translateY.value);
     return {
       transform: [
         {
@@ -129,7 +128,6 @@ export default BottomSheet;
 const styles = StyleSheet.create({
   sheet: {
     paddingTop: 6,
-    paddingHorizontal: 16,
     width: "100%",
     position: "absolute",
     bottom: 0,
