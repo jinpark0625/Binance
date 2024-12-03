@@ -2,71 +2,14 @@ import { useMemo, memo } from "react";
 import { FlatList, View, StyleSheet } from "react-native";
 import { Button, Text } from "@/components";
 import { useThemeColor } from "@/hooks/theme/useThemeColor";
-
-const DATA = [
-  {
-    price: "114,000",
-    amount: "0.00010",
-  },
-  {
-    price: "113,000",
-    amount: "0.00010",
-  },
-  {
-    price: "112,000",
-    amount: "0.00010",
-  },
-  {
-    price: "111,000",
-    amount: "0.00010",
-  },
-  {
-    price: "110,000",
-    amount: "0.00010",
-  },
-  {
-    price: "111,000",
-    amount: "0.00010",
-  },
-  {
-    price: "111,000",
-    amount: "0.00010",
-  },
-  {
-    price: "111,000",
-    amount: "0.00010",
-  },
-  {
-    price: "111,000",
-    amount: "0.00010",
-  },
-  {
-    price: "111,000",
-    amount: "0.00010",
-  },
-  {
-    price: "111,000",
-    amount: "0.00010",
-  },
-  {
-    price: "111,000",
-    amount: "0.00010",
-  },
-  {
-    price: "111,000",
-    amount: "0.00010",
-  },
-  {
-    price: "111,000",
-    amount: "0.00010",
-  },
-];
+import { FormValueType } from "@/app/(tabs)/trade";
 
 type OnPressType = {
-  onPress: (price: string) => void;
+  onPress: (field: keyof FormValueType, price: string) => void;
 };
 
 interface PriceIndicator extends OnPressType {
+  price: string;
   priceSortVariant: number;
 }
 
@@ -100,7 +43,7 @@ const Item = ({
     style={{
       ...styles.itemContainer,
     }}
-    onPress={() => onPress(price)}
+    onPress={() => onPress("price", price)}
   >
     <View
       style={{
@@ -146,18 +89,48 @@ const PriceList = memo(
   }
 );
 
-const PriceIndicator = ({ priceSortVariant, onPress }: PriceIndicator) => {
+const roundToDecimals = (number: number, decimals: number) => {
+  const multiplier = Math.pow(10, decimals);
+  return (Math.round(number * multiplier) / multiplier).toString();
+};
+
+const PriceIndicator = ({
+  price,
+  priceSortVariant,
+  onPress,
+}: PriceIndicator) => {
   const themeColor = useThemeColor();
 
   const slicedData = useMemo(() => {
     const isHigherExpanded = priceSortVariant === 1;
     const isLowerExpanded = priceSortVariant === 2;
+    const itemCount = isHigherExpanded || isLowerExpanded ? 14 : 7;
+
+    const basePrice = parseFloat(price);
+
+    const getIncrement = (price: number) => {
+      const decimals = price.toString().split(".")[1]?.length || 0;
+      const magnitude = Math.pow(10, -decimals);
+      return magnitude / 10;
+    };
+
+    const increment = getIncrement(basePrice);
+
+    const higherPrices = Array.from({ length: itemCount }, (_, index) => ({
+      price: roundToDecimals(basePrice + (index + 1) * increment, 8),
+      amount: "0.00010",
+    })).reverse();
+
+    const lowerPrices = Array.from({ length: itemCount }, (_, index) => ({
+      price: roundToDecimals(basePrice - (index + 1) * increment, 8),
+      amount: "0.00010",
+    }));
 
     return {
-      higher: isHigherExpanded ? DATA : DATA.slice(0, 7),
-      lower: isLowerExpanded ? DATA : DATA.slice(0, 7),
+      higher: isHigherExpanded ? higherPrices : higherPrices.slice(0, 7),
+      lower: isLowerExpanded ? lowerPrices : lowerPrices.slice(0, 7),
     };
-  }, [priceSortVariant]);
+  }, [priceSortVariant, price]);
 
   return (
     <View style={styles.container}>
@@ -178,11 +151,23 @@ const PriceIndicator = ({ priceSortVariant, onPress }: PriceIndicator) => {
           ...styles.center,
         }}
       >
-        <Text variant="lg" weight="medium" style={styles.marginBottom}>
-          96,864.01
+        <Text
+          variant="lg"
+          weight="medium"
+          style={styles.marginBottom}
+          numberOfLines={1}
+          ellipsizeMode="tail"
+        >
+          {price}
         </Text>
-        <Text variant="s" weight="light" color="textSecondary">
-          ≈$96,864.01
+        <Text
+          variant="s"
+          weight="light"
+          color="textSecondary"
+          numberOfLines={1}
+          ellipsizeMode="tail"
+        >
+          ≈${price}
         </Text>
       </View>
       {/* Lower Price */}
