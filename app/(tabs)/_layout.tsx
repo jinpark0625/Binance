@@ -2,7 +2,7 @@ import React from "react";
 import { Platform } from "react-native";
 import { Tabs } from "expo-router";
 import { useThemeColor } from "@/hooks/theme/useThemeColor";
-import { HapticTab } from "@/components";
+import { HapticTab, HomeHeader } from "@/components";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 export default function TabLayout() {
@@ -11,7 +11,6 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        headerShown: false,
         tabBarButton: HapticTab,
         tabBarActiveTintColor: colorScheme.backgroundBlack,
         tabBarInactiveTintColor: colorScheme.icon,
@@ -37,11 +36,13 @@ export default function TabLayout() {
           tabBarIconStyle: {
             marginBottom: 4,
           },
+          header: () => <HomeHeader />,
         }}
       />
       <Tabs.Screen
         name="trade"
         options={{
+          headerShown: false,
           title: "Trade",
           tabBarIcon: ({ color }) => (
             <MaterialIcons size={24} name="currency-exchange" color={color} />
