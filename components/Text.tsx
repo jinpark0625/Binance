@@ -9,11 +9,11 @@ import { useThemeColor } from "@/hooks/theme/useThemeColor";
 import { palette } from "@/constants/Colors";
 
 interface Text extends TextProps {
-  variant?: "xxs" | "xs" | "s" | "m" | "lg";
+  variant?: "xxs" | "xs" | "s" | "m" | "lg" | "xl";
   weight?: "light" | "normal" | "medium" | "bold";
   align?: "left" | "center" | "right";
   color?: "textPrimary" | "textSecondary";
-  staticColor?: "primary" | "green" | "red" | "white";
+  staticColor?: "primary" | "green" | "red" | "white" | "gold" | "black";
   children: ReactNode;
 }
 
@@ -66,6 +66,10 @@ const styles = StyleSheet.create({
     fontSize: 17,
     lineHeight: 27,
   },
+  xl: {
+    fontSize: 27,
+    lineHeight: 34,
+  },
   light: {
     fontWeight: 300,
   },
@@ -96,7 +100,13 @@ const styles = StyleSheet.create({
   red: {
     color: palette.red,
   },
+  gold: {
+    color: palette.gold,
+  },
   white: {
     color: palette.white,
+  },
+  black: {
+    color: palette.gray[900],
   },
 });
