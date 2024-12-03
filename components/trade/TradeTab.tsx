@@ -2,7 +2,7 @@ import { View, StyleSheet } from "react-native";
 import { Button, Text } from "@/components";
 import { palette } from "@/constants/Colors";
 import { useThemeColor } from "@/hooks/theme/useThemeColor";
-import { TradeType } from "@/app/(tabs)/trade/_layout";
+import { TradeType } from "@/app/(tabs)/trade";
 
 interface TradeTab {
   tradeType: TradeType;
