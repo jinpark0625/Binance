@@ -3,41 +3,47 @@ import { Button, Text } from "@/components";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useThemeColor } from "@/hooks/theme/useThemeColor";
 
-const CoinInfo = () => {
+interface CoinInfo {
+  symbol?: string;
+  onPress: () => void;
+  openBottomSheet: (type: string) => void;
+}
+
+const CoinInfo = ({ symbol, onPress, openBottomSheet }: CoinInfo) => {
   const themeColor = useThemeColor();
 
   return (
     <View style={styles.container}>
       <View>
-        <View style={styles.titleContainer}>
+        <Button
+          variant="custom"
+          onPress={() => openBottomSheet("search")}
+          style={styles.titleContainer}
+        >
           <Text variant="lg" weight="medium">
             {/* title */}
-            BTC/USDT
+            {`${symbol}`}/USDT
           </Text>
           <MaterialIcons
             name="arrow-drop-down"
             size={24}
             color={themeColor.backgroundBlack}
           />
-        </View>
+        </Button>
         <Text variant="s" staticColor="green">
           {/* percent? */}
           +0.05%
         </Text>
       </View>
       <View style={styles.row}>
-        <Button
-          variant="custom"
-          style={styles.marginRight}
-          onPress={console.log}
-        >
+        <Button variant="custom" style={styles.marginRight} onPress={onPress}>
           <MaterialIcons
             name="candlestick-chart"
             size={24}
             color={themeColor.icon}
           />
         </Button>
-        <Button variant="custom" onPress={console.log}>
+        <Button variant="custom" onPress={() => {}}>
           <MaterialIcons name="more-horiz" size={24} color={themeColor.icon} />
         </Button>
       </View>
