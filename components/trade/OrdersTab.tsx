@@ -1,23 +1,10 @@
 import { Dimensions, View, StyleSheet } from "react-native";
-import { Button, CustomTabBar } from "@/components";
+import { Button, CustomTabBar, Holdings, OpenOrders } from "@/components";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useThemeColor } from "@/hooks/theme/useThemeColor";
-import {
-  MaterialTopTabNavigationEventMap,
-  MaterialTopTabNavigationOptions,
-  createMaterialTopTabNavigator,
-} from "@react-navigation/material-top-tabs";
-import { withLayoutContext } from "expo-router";
-import { ParamListBase, TabNavigationState } from "@react-navigation/native";
 
-const { Navigator } = createMaterialTopTabNavigator();
-
-export const MaterialTopTabs = withLayoutContext<
-  MaterialTopTabNavigationOptions,
-  typeof Navigator,
-  TabNavigationState<ParamListBase>,
-  MaterialTopTabNavigationEventMap
->(Navigator);
+const Tab = createMaterialTopTabNavigator();
 
 const WINDOW_HEIGHT = Dimensions.get("window").height;
 
@@ -31,23 +18,17 @@ const OrdersTab = () => {
         ...styles.container,
       }}
     >
-      <MaterialTopTabs
+      <Tab.Navigator
         tabBar={CustomTabBar}
         screenOptions={{
           tabBarStyle: { height: "auto" },
         }}
       >
-        <MaterialTopTabs.Screen
-          name="orders"
-          options={{ title: "Open Orders (0)" }}
-        />
-        <MaterialTopTabs.Screen
-          name="holdings"
-          options={{ title: "Holdings" }}
-        />
-      </MaterialTopTabs>
+        <Tab.Screen name="OpenOrders" component={OpenOrders} />
+        <Tab.Screen name="Holdings" component={Holdings} />
+      </Tab.Navigator>
       <View style={styles.buttonContainer}>
-        <Button variant="custom" onPress={console.log} style={styles.button}>
+        <Button variant="custom" onPress={() => {}} style={styles.button}>
           <MaterialIcons
             name="pending-actions"
             size={18}
@@ -58,13 +39,12 @@ const OrdersTab = () => {
     </View>
   );
 };
-
 export default OrdersTab;
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     marginTop: 16,
-    justifyContent: "center",
   },
   buttonContainer: {
     position: "absolute",
