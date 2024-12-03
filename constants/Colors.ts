@@ -16,9 +16,13 @@ export const palette = {
   primary: "#FCD435",
   green: "#2DBD85",
   greenLight: "#F5FCF9",
+  greenLightDark: "#202D35",
   red: "#F6455D",
   redLight: "#FFF6F7",
+  redLightDark: "#2A2732",
   gold: "#C09306",
+  goldLight: "#FDF8E5",
+  goldLightDark: "#2B2F30",
 };
 
 export const lightTheme = {
@@ -48,14 +52,22 @@ export const Colors = {
     textPrimary: palette.gray[900],
     textSecondary: palette.gray[400],
     icon: palette.gray[400],
+    disabled: palette.gray[300],
+    redLight: palette.redLight,
+    greenLight: palette.greenLight,
+    goldLight: palette.goldLight,
   },
   dark: {
     background: palette.gray[900],
     backgroundBlack: palette.gray[100],
-    fieldBackground: palette.gray[900],
+    fieldBackground: palette.gray[800],
     border: palette.gray[700],
     textPrimary: palette.gray[200],
     textSecondary: palette.gray[600],
     icon: palette.gray[600],
+    disabled: palette.gray[700],
+    redLight: palette.redLightDark,
+    greenLight: palette.greenLightDark,
+    goldLight: palette.goldLightDark,
   },
 };
