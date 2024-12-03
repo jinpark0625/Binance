@@ -13,7 +13,7 @@ interface Button extends PressableProps {
   title?: string;
   onPress: () => void;
   disabled?: boolean;
-  variant?: "primary" | "secondary" | "custom";
+  variant?: "primary" | "green" | "red" | "custom";
   style?: StyleProp<ViewStyle>;
   children?: ReactNode;
 }
@@ -38,7 +38,13 @@ const Button = ({
         style,
       ]}
     >
-      {title ? <Text staticColor="white">{title}</Text> : children}
+      {title ? (
+        <Text staticColor={variant === "primary" ? "black" : "white"}>
+          {title}
+        </Text>
+      ) : (
+        children
+      )}
     </Pressable>
   );
 };
@@ -53,9 +59,12 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   primary: {
+    backgroundColor: palette.primary,
+  },
+  green: {
     backgroundColor: palette.green,
   },
-  secondary: {
+  red: {
     backgroundColor: palette.red,
   },
 });
