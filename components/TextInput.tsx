@@ -17,26 +17,27 @@ import Animated, {
   Easing,
 } from "react-native-reanimated";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import { FormValueType } from "@/app/(tabs)/trade";
 
 interface TextInput extends TextInputProps {
   label: string;
+  field: keyof FormValueType;
   value?: string | undefined;
   onChangeText: (val: string) => void;
   buttonsActive?: boolean;
-  onDecrease?: () => void;
-  onIncrease?: () => void;
+  onFieldUpdate?: (field: keyof FormValueType, isIncrease: boolean) => void;
   popoverActive?: boolean;
 }
 
 const TextInput = ({
   label,
+  field,
   value,
   onBlur,
   onFocus,
   onChangeText,
   buttonsActive = false,
-  onDecrease,
-  onIncrease,
+  onFieldUpdate = () => {},
   popoverActive = false,
 }: TextInput) => {
   const themeColor = useThemeColor();
@@ -83,7 +84,12 @@ const TextInput = ({
               ...styles.popover,
             }}
           >
-            <Text style={styles.popoverText} variant="xs">
+            <Text
+              style={{
+                color: themeColor.background,
+              }}
+              variant="xs"
+            >
               ${Number(value).toLocaleString()}
             </Text>
           </View>
@@ -91,7 +97,6 @@ const TextInput = ({
           <View
             style={{
               borderTopColor: themeColor.backgroundBlack,
-
               ...styles.arrow,
             }}
           />
@@ -100,9 +105,14 @@ const TextInput = ({
       {buttonsActive && (
         <Pressable
           style={[styles.buttonContainer, styles.buttonLeft]}
-          onPress={onDecrease}
+          onPress={() => onFieldUpdate(field, false)}
+          disabled={Number(value) === 0}
         >
-          <AntDesign name="minus" size={16} color={themeColor.icon} />
+          <AntDesign
+            name="minus"
+            size={16}
+            color={Number(value) !== 0 ? themeColor.icon : themeColor.disabled}
+          />
         </Pressable>
       )}
       <RNTextInput
@@ -151,7 +161,7 @@ const TextInput = ({
       {buttonsActive && (
         <Pressable
           style={[styles.buttonContainer, styles.buttonRight]}
-          onPress={onIncrease}
+          onPress={() => onFieldUpdate(field, true)}
         >
           <AntDesign name="plus" size={16} color={themeColor.icon} />
         </Pressable>
@@ -206,9 +216,6 @@ const styles = StyleSheet.create({
     minWidth: 30,
     alignItems: "center",
     opacity: 0.9,
-  },
-  popoverText: {
-    color: "white",
   },
   arrow: {
     position: "absolute",
