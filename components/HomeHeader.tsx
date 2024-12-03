@@ -4,12 +4,24 @@ import { useThemeColor } from "@/hooks/theme/useThemeColor";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Logo from "@/components/icons/Logo";
 import { Button, Text } from "@/components";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const HomeHeader = () => {
+  const inset = useSafeAreaInsets();
+
   const themeColor = useThemeColor();
 
+  const handleNavigateToSearch = () => {
+    router.push("/search");
+  };
+
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      style={{
+        paddingTop: inset.top,
+        ...styles.container,
+      }}
+    >
       <Logo />
       <Button
         variant="custom"
@@ -17,7 +29,7 @@ const HomeHeader = () => {
           backgroundColor: themeColor.fieldBackground,
           ...styles.button,
         }}
-        onPress={() => {}}
+        onPress={handleNavigateToSearch}
       >
         <MaterialIcons
           name="search"
