@@ -1,5 +1,11 @@
 import { ReactNode, useCallback } from "react";
-import { Dimensions, View, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  Dimensions,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Keyboard,
+} from "react-native";
 import { useThemeColor } from "@/hooks/theme/useThemeColor";
 import Animated, {
   useSharedValue,
@@ -65,6 +71,7 @@ const BottomSheet = ({
       const closeThreshold = height.value * 0.3;
       if (translateY.value > closeThreshold || event.velocityY > 500) {
         scrollTo(height.value);
+        Keyboard.dismiss();
         toggleSheet();
       } else {
         scrollTo(0);
@@ -95,7 +102,13 @@ const BottomSheet = ({
   return (
     <>
       <Animated.View style={[styles.backdrop, backdropStyle]}>
-        <TouchableOpacity style={styles.flex} onPress={toggleSheet} />
+        <TouchableOpacity
+          style={styles.flex}
+          onPress={() => {
+            Keyboard.dismiss();
+            toggleSheet();
+          }}
+        />
       </Animated.View>
       <GestureDetector gesture={pan}>
         <Animated.View
