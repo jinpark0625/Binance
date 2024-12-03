@@ -5,7 +5,7 @@ import {
 } from "@tanstack/react-query";
 import { AppStateStatus, Platform, View, useColorScheme } from "react-native";
 import { useOnlineManager, useAppState } from "@/hooks/query";
-import { GlobalBottomSheet } from "@/components";
+import { GlobalBottomSheet, SearchHeader } from "@/components";
 import { Stack } from "expo-router";
 import { RecoilRoot } from "recoil";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -36,6 +36,12 @@ export default function RootLayout() {
             <View style={{ flex: 1 }}>
               <Stack>
                 <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                <Stack.Screen
+                  name="search"
+                  options={{
+                    header: () => <SearchHeader />,
+                  }}
+                />
                 <Stack.Screen name="+not-found" />
               </Stack>
               <GlobalBottomSheet />
