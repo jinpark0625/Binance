@@ -1,4 +1,4 @@
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Platform } from "react-native";
 import { Button, Text } from "@/components";
 import { palette } from "@/constants/Colors";
 import { useThemeColor } from "@/hooks/theme/useThemeColor";
@@ -43,6 +43,7 @@ const TradeTab = ({ tradeType, onPress }: TradeTab) => {
           }}
         />
         <Text
+          variant={Platform.OS === "android" ? "s" : "m"}
           staticColor={tradeType === "buy" ? "white" : undefined}
           color={tradeType !== "buy" ? "textSecondary" : undefined}
         >
@@ -72,6 +73,7 @@ const TradeTab = ({ tradeType, onPress }: TradeTab) => {
           }}
         />
         <Text
+          variant={Platform.OS === "android" ? "s" : "m"}
           staticColor={tradeType === "sell" ? "white" : undefined}
           color={tradeType !== "sell" ? "textSecondary" : undefined}
         >
