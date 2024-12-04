@@ -25,6 +25,7 @@ const OrderOptionSelector = ({
   borderColor: string;
   iconColor: string;
 }) => {
+  const themeColor = useThemeColor();
   const selectedItem = useRecoilValue(filterState);
 
   return (
@@ -44,7 +45,11 @@ const OrderOptionSelector = ({
           >
             <Text>{item}</Text>
             {selectedItem.orderOption === item && (
-              <MaterialIcons name="check" size={24} />
+              <MaterialIcons
+                name="check"
+                size={24}
+                color={themeColor.backgroundBlack}
+              />
             )}
           </Button>
         ))}
@@ -74,6 +79,7 @@ const PriceUnitSelector = ({
   borderColor: string;
   iconColor: string;
 }) => {
+  const themeColor = useThemeColor();
   const selectedFormattedPrice = useRecoilValue(filterState);
 
   return (
@@ -93,7 +99,11 @@ const PriceUnitSelector = ({
           >
             <Text>{item}</Text>
             {selectedFormattedPrice.priceUnit === item && (
-              <MaterialIcons name="check" size={24} />
+              <MaterialIcons
+                name="check"
+                size={24}
+                color={themeColor.backgroundBlack}
+              />
             )}
           </Button>
         ))}
