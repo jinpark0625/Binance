@@ -3,6 +3,7 @@ import { Button, Text } from "@/components";
 import { palette } from "@/constants/Colors";
 import { useThemeColor } from "@/hooks/theme/useThemeColor";
 import { TradeType } from "@/app/(tabs)/trade";
+import Arrow from "@/components/icons/Arrow";
 
 interface TradeTab {
   tradeType: TradeType;
@@ -34,11 +35,16 @@ const TradeTab = ({ tradeType, onPress }: TradeTab) => {
         />
         <View
           style={{
-            borderLeftWidth: 12,
-            borderTopWidth: 11,
-            borderBottomWidth: 11,
-            right: 0,
-            borderColor: tradeType === "buy" ? palette.green : "transparent",
+            ...Platform.select({
+              ios: {
+                borderLeftWidth: 12,
+                borderTopWidth: 11,
+                borderBottomWidth: 11,
+                right: 0,
+                borderColor:
+                  tradeType === "buy" ? palette.green : "transparent",
+              },
+            }),
             ...styles.arrow,
           }}
         />
@@ -49,6 +55,16 @@ const TradeTab = ({ tradeType, onPress }: TradeTab) => {
         >
           Buy
         </Text>
+        {Platform.OS === "android" && tradeType === "buy" && (
+          <View
+            style={{
+              position: "absolute",
+              right: 0,
+            }}
+          >
+            <Arrow color={palette.green} direction="right" />
+          </View>
+        )}
       </Button>
       <Button
         variant="custom"
@@ -64,11 +80,16 @@ const TradeTab = ({ tradeType, onPress }: TradeTab) => {
         />
         <View
           style={{
-            borderRightWidth: 12,
-            borderTopWidth: 11,
-            borderBottomWidth: 11,
-            left: 0,
-            borderColor: tradeType === "sell" ? palette.red : "transparent",
+            ...Platform.select({
+              ios: {
+                borderRightWidth: 12,
+                borderTopWidth: 11,
+                borderBottomWidth: 11,
+                left: 0,
+                borderColor: tradeType === "sell" ? palette.red : "transparent",
+              },
+            }),
+
             ...styles.arrow,
           }}
         />
@@ -79,6 +100,16 @@ const TradeTab = ({ tradeType, onPress }: TradeTab) => {
         >
           Sell
         </Text>
+        {Platform.OS === "android" && tradeType === "sell" && (
+          <View
+            style={{
+              position: "absolute",
+              left: 0,
+            }}
+          >
+            <Arrow color={palette.red} direction="left" />
+          </View>
+        )}
       </Button>
     </View>
   );
