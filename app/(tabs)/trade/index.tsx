@@ -284,7 +284,7 @@ export default TradeScreen;
 
 const styles = StyleSheet.create({
   contentContainer: {
-    flexDirection: "row",
+    flexDirection: Platform.OS === "ios" ? "row" : "row-reverse",
     paddingHorizontal: 16,
     gap: 12,
   },
