@@ -1,4 +1,4 @@
-import { View, StyleSheet, TextInput } from "react-native";
+import { View, StyleSheet, TextInput, Platform } from "react-native";
 import { Button } from "@/components";
 import { useThemeColor } from "@/hooks/theme/useThemeColor";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
@@ -71,6 +71,14 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 32,
     marginLeft: 4,
+    ...Platform.select({
+      ios: {},
+      android: {
+        paddingVertical: 0,
+        textAlignVertical: "center",
+      },
+    }),
+    fontSize: 15,
   },
   clearButton: {
     padding: 4,
