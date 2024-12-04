@@ -1,11 +1,5 @@
-import { useState, useCallback } from "react";
-import {
-  Dimensions,
-  View,
-  ScrollView,
-  StyleSheet,
-  Keyboard,
-} from "react-native";
+import { useRef, useState, useCallback } from "react";
+import { Dimensions, View, StyleSheet, Keyboard, Platform } from "react-native";
 import { Button, BottomSheetContent, Text, SearchBar } from "@/components";
 import {
   CoinInfo,
@@ -26,6 +20,7 @@ import { router } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { searchQueryState } from "@/atom/searchQueryAtom";
 import Search from "@/app/search";
+import { ScrollView } from "react-native-gesture-handler";
 
 export type TradeType = "buy" | "sell";
 export type FormValueType = {
@@ -45,7 +40,9 @@ export type FilterType = {
 const WINDOW_HEIGHT = Dimensions.get("window").height;
 
 const TradeScreen = () => {
-  const insets = useSafeAreaInsets();
+  const scrollRef = useRef(null);
+
+  const inset = useSafeAreaInsets();
   const themeColor = useThemeColor();
 
   // atoms
@@ -184,7 +181,9 @@ const TradeScreen = () => {
   };
 
   return (
-    <View style={{ paddingTop: insets.top }}>
+    <View
+      style={{ paddingTop: Platform.OS === "ios" ? inset.top : inset.top + 12 }}
+    >
       {/* CoinInfo */}
       <CoinInfo
         symbol={activeSymbol.symbol || "BTC"}
@@ -198,6 +197,7 @@ const TradeScreen = () => {
           backgroundColor: themeColor.background,
         }}
         stickyHeaderIndices={[1]}
+        ref={scrollRef}
       >
         {/* PriceIndicator & SpotOrderForm Container*/}
         <View style={styles.contentContainer}>
@@ -266,6 +266,7 @@ const TradeScreen = () => {
               handleInputChange={handleInputChange}
               openBottomSheet={openBottomSheet}
               handleInputUpdate={handleInputUpdate}
+              ref={scrollRef}
             />
 
             <TradeOverview tradeType={tradeType} />
