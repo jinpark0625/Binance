@@ -5,6 +5,7 @@ import {
   Keyboard,
   StyleSheet,
   Pressable,
+  Platform,
 } from "react-native";
 import { router } from "expo-router";
 import { useThemeColor } from "@/hooks/theme/useThemeColor";
@@ -53,7 +54,12 @@ const ChartHeader = () => {
   };
 
   return (
-    <View style={{ paddingTop: inset.top, ...styles.container }}>
+    <View
+      style={{
+        paddingTop: Platform.OS === "ios" ? inset.top : inset.top + 12,
+        ...styles.container,
+      }}
+    >
       <View style={styles.leftContainer}>
         <Pressable onPress={() => router.back()}>
           <MaterialIcons
