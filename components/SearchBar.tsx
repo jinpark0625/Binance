@@ -37,7 +37,10 @@ const SearchBar = ({ isHeader = false, onChangeText }: SearchBar) => {
           value={searchQuery}
           onChangeText={onChangeText}
           placeholderTextColor={themeColor.textSecondary}
-          style={styles.input}
+          style={{
+            color: themeColor.textPrimary,
+            ...styles.input,
+          }}
         />
         {searchQuery?.length > 0 && (
           <Button variant="custom" onPress={handleClear}>
