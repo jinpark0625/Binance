@@ -6,6 +6,7 @@ import {
   StyleSheet,
   View,
   Pressable,
+  Platform,
 } from "react-native";
 import Text from "./Text";
 import { useThemeColor } from "@/hooks/theme/useThemeColor";
@@ -176,7 +177,15 @@ const styles = StyleSheet.create({
   input: {
     width: "100%",
     height: 40,
-    paddingTop: 12,
+    ...Platform.select({
+      ios: {
+        paddingTop: 12,
+      },
+      android: {
+        paddingBottom: 0,
+        textAlignVertical: "bottom",
+      },
+    }),
     paddingHorizontal: 26,
     borderRadius: 8,
     textAlign: "center",
