@@ -81,7 +81,6 @@ const HomeScreen = () => {
             variant="primary"
             onPress={handleNavigateToTrade}
             style={{
-              paddingVertical: 8,
               paddingHorizontal: 12,
             }}
           />
