@@ -36,7 +36,7 @@ const AnimatedTextInput = Animated.createAnimatedComponent(RNTextInput);
 
 const HANDLE_WIDTH = 16;
 const MARKER_SIZE = 8;
-const MARKERS = [0, 0.25, 0.5, 0.75, 1];
+const MARKERS = [0.25, 0.5, 0.75, 1];
 const TRACK_PADDING = 2;
 const MARKER_INSET = 6;
 
@@ -177,6 +177,17 @@ const TradeForm = forwardRef(
             onLayout={handleLayout}
           >
             <Animated.View style={[styles.progressBar, progressStyle]} />
+            <View
+              style={[
+                styles.marker,
+                {
+                  top: 0,
+                  left: 4,
+                  backgroundColor: themeColor.backgroundBlack,
+                  borderColor: themeColor.backgroundBlack,
+                },
+              ]}
+            />
             {MARKERS.map((percentage) => (
               <Animated.View
                 key={percentage}
