@@ -1,5 +1,10 @@
 import { forwardRef, RefObject, useState } from "react";
-import { View, StyleSheet, LayoutChangeEvent, Platform } from "react-native";
+import {
+  View,
+  StyleSheet,
+  LayoutChangeEvent,
+  TextInput as RNTextInput,
+} from "react-native";
 import { Button, CheckBox, Text, TextInput } from "@/components";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useThemeColor } from "@/hooks/theme/useThemeColor";
@@ -14,6 +19,7 @@ import {
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
+  useAnimatedProps,
 } from "react-native-reanimated";
 import { ScrollView } from "react-native-gesture-handler";
 
@@ -25,6 +31,8 @@ interface TradeForm {
   openBottomSheet: (contentType: string) => void;
   handleInputUpdate: (field: keyof FormValueType, isIncrease: boolean) => void;
 }
+
+const AnimatedTextInput = Animated.createAnimatedComponent(RNTextInput);
 
 const HANDLE_WIDTH = 16;
 const MARKER_SIZE = 8;
@@ -51,6 +59,8 @@ const TradeForm = forwardRef(
 
     const offset = useSharedValue(0);
 
+    const isGestureActive = useSharedValue(false);
+
     const MAX_VALUE = trackWidth - HANDLE_WIDTH - 2 * TRACK_PADDING;
 
     const getMarkerPosition = (percentage: number) => {
@@ -70,9 +80,15 @@ const TradeForm = forwardRef(
 
     const pan = Gesture.Pan()
       .simultaneousWithExternalGesture(ref as RefObject<ScrollView>)
+      .onBegin(() => {
+        isGestureActive.value = true;
+      })
       .onChange((event) => {
         const newValue = offset.value + event.changeX;
         offset.value = Math.max(0, Math.min(newValue, MAX_VALUE));
+      })
+      .onFinalize(() => {
+        isGestureActive.value = false;
       });
 
     const sliderStyle = useAnimatedStyle(() => {
@@ -88,9 +104,32 @@ const TradeForm = forwardRef(
       };
     });
 
-    const makerStyle = useAnimatedStyle(() => {
+    const createMarkerStyle = (markerPercentage: number) => {
+      return useAnimatedStyle(() => {
+        const isActive = offset.value / MAX_VALUE >= markerPercentage;
+
+        return {
+          backgroundColor: isActive
+            ? themeColor.backgroundBlack
+            : themeColor.background,
+          borderColor: isActive
+            ? themeColor.backgroundBlack
+            : themeColor.border,
+        };
+      });
+    };
+
+    const popoverStyle = useAnimatedStyle(() => {
       return {
-        backgroundColor: themeColor.backgroundBlack,
+        transform: [{ translateX: offset.value }],
+        opacity: isGestureActive.value ? 0.9 : 0,
+      };
+    });
+
+    const animatedProps = useAnimatedProps(() => {
+      return {
+        text: `${((offset.value / MAX_VALUE) * 100).toFixed(0)}%`,
+        defaultValue: `${offset.value}%`,
       };
     });
 
@@ -137,13 +176,15 @@ const TradeForm = forwardRef(
             }}
             onLayout={handleLayout}
           >
-            <Animated.View style={progressStyle} />
+            <Animated.View style={[styles.progressBar, progressStyle]} />
             {MARKERS.map((percentage) => (
-              <View
+              <Animated.View
                 key={percentage}
                 style={[
                   styles.marker,
+                  createMarkerStyle(percentage),
                   {
+                    top: 0,
                     backgroundColor: themeColor.background,
                     borderColor: themeColor.border,
                     left: getMarkerPosition(percentage),
@@ -152,13 +193,37 @@ const TradeForm = forwardRef(
               />
             ))}
 
+            <Animated.View
+              style={[
+                {
+                  backgroundColor: themeColor.backgroundBlack,
+                  ...styles.popover,
+                },
+                popoverStyle,
+              ]}
+            >
+              <AnimatedTextInput
+                animatedProps={animatedProps}
+                style={{
+                  fontSize: 9,
+                  color: themeColor.background,
+                  margin: 0,
+                  padding: 0,
+                  includeFontPadding: false,
+                  textAlignVertical: "center",
+                }}
+                editable={false}
+              />
+            </Animated.View>
+
             <GestureDetector gesture={pan}>
               <Animated.View
                 style={[styles.sliderHandleContainer, sliderStyle]}
               >
                 <View
                   style={{
-                    backgroundColor: themeColor.backgroundBlack,
+                    borderColor: themeColor.backgroundBlack,
+                    backgroundColor: themeColor.background,
                     ...styles.sliderHandle,
                   }}
                 />
@@ -268,7 +333,9 @@ const styles = StyleSheet.create({
     height: 12,
     borderRadius: 2,
     position: "absolute",
-    left: 5,
+    bottom: 3,
+    left: 3,
+    borderWidth: 1,
   },
   marker: {
     position: "absolute",
@@ -286,5 +353,17 @@ const styles = StyleSheet.create({
     left: 0,
     top: 0,
     borderRadius: 2,
+  },
+  popover: {
+    position: "absolute",
+    top: -30,
+    left: -4,
+    width: 28,
+    height: 20,
+    padding: 0,
+    borderRadius: 4,
+    alignItems: "center",
+    justifyContent: "center",
+    opacity: 0.9,
   },
 });
