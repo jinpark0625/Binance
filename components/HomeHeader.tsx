@@ -1,4 +1,4 @@
-import { View, SafeAreaView, StyleSheet } from "react-native";
+import { View, SafeAreaView, StyleSheet, Platform } from "react-native";
 import { router } from "expo-router";
 import { useThemeColor } from "@/hooks/theme/useThemeColor";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
@@ -18,7 +18,7 @@ const HomeHeader = () => {
   return (
     <SafeAreaView
       style={{
-        paddingTop: inset.top,
+        paddingTop: Platform.OS === "ios" ? inset.top : inset.top + 12,
         ...styles.container,
       }}
     >
