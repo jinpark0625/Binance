@@ -30,7 +30,7 @@ const HANDLE_WIDTH = 16;
 const MARKER_SIZE = 8;
 const MARKERS = [0, 0.25, 0.5, 0.75, 1];
 const TRACK_PADDING = 2;
-const MARKER_INSET = 4;
+const MARKER_INSET = 6;
 
 const TradeForm = forwardRef(
   (
@@ -154,12 +154,15 @@ const TradeForm = forwardRef(
 
             <GestureDetector gesture={pan}>
               <Animated.View
-                style={[
-                  { backgroundColor: themeColor.backgroundBlack },
-                  styles.sliderHandle,
-                  sliderStyle,
-                ]}
-              />
+                style={[styles.sliderHandleContainer, sliderStyle]}
+              >
+                <View
+                  style={{
+                    backgroundColor: themeColor.backgroundBlack,
+                    ...styles.sliderHandle,
+                  }}
+                />
+              </Animated.View>
             </GestureDetector>
           </View>
         </GestureHandlerRootView>
@@ -252,14 +255,13 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     justifyContent: "center",
     marginVertical: 16,
-    // ...Platform.select({
-    //   ios: {
-    //     marginVertical: 16,
-    //   },
-    //   android: {
-    //     marginTop: 16,
-    //   },
-    // }),
+  },
+  sliderHandleContainer: {
+    position: "relative",
+    width: 24,
+    height: 24,
+    alignItems: "center",
+    justifyContent: "center",
   },
   sliderHandle: {
     width: 12,
