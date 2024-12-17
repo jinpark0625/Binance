@@ -1,4 +1,4 @@
-# KrononLabs
+# Binance
 
 ## 프로젝트 개요
 이 프로젝트는 Binance Spot Exchange의 기능을 구현한 모바일 애플리케이션입니다. 코인 목록, 주문서에서의 가격 선택 및 차트 시각화 기능을 제공합니다. ReactNative, EXPO, Tanstack Query, Recoil을 사용하여 개발되었습니다.
